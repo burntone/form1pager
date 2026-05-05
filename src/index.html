@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cigars &amp; Networking | June 6, 2026 | v0.3</title>
+
+  <!-- SEO -->
+  <meta name="description" content="A Gathering of Minds, A Celebration of Taste. Join us for an exclusive event on June 3rd, 2026 in North Aurora, IL.">
+  <meta property="og:title" content="Cigars &amp; Networking">
+  <meta property="og:description" content="A Gathering of Minds, A Celebration of Taste. June 3rd, 2026 — North Aurora, IL.">
+  <meta property="og:type" content="website">
+
+  <!-- Preload hero image so it paints immediately -->
+  <link rel="preload" as="image" href="cigar.webp" type="image/webp" fetchpriority="high">
+
+  <!-- Self-hosted fonts — preload the two most visible above-the-fold faces -->
+  <link rel="preload" href="fonts/playfair-display-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/pinyon-script-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Full Bleed Background -->
+  <div class="hero-bg"></div>
+  <canvas id="smoke-canvas"></canvas>
+
+  <div class="page-wrapper">
+    
+    <header class="header">
+      <h1>Cigars &amp; Networking</h1>
+      <div class="separator"></div>
+      <div class="subtitle">A Gathering of Minds,<br>A Celebration of Taste</div>
+      <div class="small-caps-subtitle">
+        <h2>JUNE 6, 2026</h2><br>
+        <h3 style="display:inline-block; margin-top: 8px;">HOST: ALEX RADU</h3><br>
+        <h3 style="display:inline-block; margin-top: 8px;">LOCATION: NORTH AURORA, IL 60542</h3>
+      </div>
+    </header>
+
+    <div class="form-container">
+      
+      <div id="successMessage" class="success-message">
+        <h2>Confirmed</h2>
+        <p>Your RSVP has been received. You will receive a calendar invitation shortly.</p>
+      </div>
+
+      <form id="rsvpForm">
+        <div class="form-row">
+          <div class="input-group">
+            <input type="text" id="fname" name="fname" placeholder="FIRST NAME" required autocomplete="given-name">
+          </div>
+          <div class="input-group">
+            <input type="text" id="lname" name="lname" placeholder="LAST NAME" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="input-group full-width">
+          <input type="tel" id="phone" name="phone" placeholder="PHONE NUMBER" autocomplete="tel">
+        </div>
+        
+        <div class="input-group full-width">
+          <input type="email" id="email" name="email" placeholder="EMAIL ADDRESS" required autocomplete="email">
+        </div>
+
+        <div class="input-group full-width">
+          <input type="text" id="company" name="company" placeholder="COMPANY NAME" autocomplete="organization">
+        </div>
+
+        <div class="switch-container">
+          <span class="switch-label">I AM BRINGING A GUEST (+1)</span>
+          <label class="switch">
+            <input type="checkbox" id="plusone" name="plusone">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div id="plusOneFields" class="plus-one-fields hidden">
+          <div class="fields-wrapper">
+            <div class="form-row">
+              <div class="input-group">
+                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST NAME">
+              </div>
+              <div class="input-group">
+                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST NAME">
+              </div>
+            </div>
+            <div class="input-group full-width">
+              <input type="email" id="guest_email" name="guest_email" placeholder="GUEST EMAIL (OPTIONAL)">
+            </div>
+            <div class="input-group full-width">
+              <input type="text" id="guest_company" name="guest_company" placeholder="GUEST COMPANY (OPTIONAL)">
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">ACCEPT INVITATION</button>
+        </div>
+      </form>
+
+      <div class="share-options">
+        <button type="button" class="btn-transparent" id="shareBtn">SHARE INVITATION</button>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">&copy; burntone 2026 &nbsp;|&nbsp; v0.3</footer>
+
+  <!-- Three.js and main script both deferred — load after DOM, in order -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
