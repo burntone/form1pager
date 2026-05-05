@@ -28,7 +28,7 @@ export async function onRequestPost(context) {
 
     // ── 3. Config ────────────────────────────────────────────────────────────
     const SENDER_EMAIL = 'events@zonaro.org';
-    const ADMIN_EMAIL  = 'admin@zonaro.org';
+    const ADMIN_EMAIL  = 'rsvp@zonaro.org';
 
     // ── 4. ICS calendar attachment ───────────────────────────────────────────
     // Event: May 15th 2026, 6 PM – 9 PM CDT (= 23:00–02:00 UTC next day)
@@ -141,7 +141,7 @@ export async function onRequestPost(context) {
     const adminPayload = {
       from: `RSVP System <${SENDER_EMAIL}>`,
       to: [ADMIN_EMAIL],
-      subject: `New RSVP: ${attendeeName}`,
+      subject: `cigars event confirmation`,
       text: [
         'New RSVP Received',
         '─────────────────',

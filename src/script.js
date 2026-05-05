@@ -65,38 +65,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Share Invitation Logic
+  // Back & Share Logic
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      successMessage.classList.remove('visible');
+      form.style.display = 'flex';
+      // Form was already reset during success
+    });
+  }
+
   const shareBtn = document.getElementById('shareBtn');
   const shareUrl = window.location.href;
-  const shareText = "A Gathering of Minds, A Celebration of Taste. Join me at Cigars & Networking on June 3rd!";
+  const shareText = "A Gathering of Minds, A Celebration of Taste. Join me at Cigars & Networking on May 15th!";
 
-  shareBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Cigars & Networking',
-          text: shareText,
-          url: shareUrl
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Cigars & Networking',
+            text: shareText,
+            url: shareUrl
+          });
+        } catch (err) {
+          console.error('Share failed:', err);
+        }
+      } else {
+        // Fallback: Copy to clipboard
+        navigator.clipboard.writeText(`${shareText} ${shareUrl}`).then(() => {
+          const originalText = shareBtn.textContent;
+          shareBtn.textContent = 'LINK COPIED!';
+          setTimeout(() => {
+            shareBtn.textContent = originalText;
+          }, 3000);
+        }).catch(err => {
+          console.error('Could not copy text: ', err);
+          alert('Sharing is not supported on this browser. Link: ' + shareUrl);
         });
-      } catch (err) {
-        console.error('Share failed:', err);
       }
-    } else {
-      // Fallback: Copy to clipboard
-      navigator.clipboard.writeText(`${shareText} ${shareUrl}`).then(() => {
-        const originalText = shareBtn.textContent;
-        shareBtn.textContent = 'LINK COPIED!';
-        setTimeout(() => {
-          shareBtn.textContent = originalText;
-        }, 3000);
-      }).catch(err => {
-        console.error('Could not copy text: ', err);
-        alert('Sharing is not supported on this browser. Link: ' + shareUrl);
-      });
-    }
-  });
+    });
+  }
 
   // --- WEBGL SMOKE SHADER ---
   const canvas = document.getElementById('smoke-canvas');

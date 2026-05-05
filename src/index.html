@@ -46,6 +46,16 @@
       <div id="successMessage" class="success-message">
         <h2>Confirmed</h2>
         <p>Your RSVP has been received. You will receive a calendar invitation shortly.</p>
+        <div class="success-actions">
+          <button type="button" id="backBtn" class="action-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            BACK
+          </button>
+          <button type="button" id="shareBtn" class="action-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            SHARE
+          </button>
+        </div>
       </div>
 
       <form id="rsvpForm">
@@ -101,10 +111,6 @@
           <button type="submit" id="submitBtn">ACCEPT INVITATION</button>
         </div>
       </form>
-
-      <div class="share-options">
-        <button type="button" class="btn-transparent" id="shareBtn">SHARE INVITATION</button>
-      </div>
 
     </div>
   </div>
