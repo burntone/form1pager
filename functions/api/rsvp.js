@@ -31,7 +31,7 @@ export async function onRequestPost(context) {
     const ADMIN_EMAIL  = 'admin@zonaro.org';
 
     // ── 4. ICS calendar attachment ───────────────────────────────────────────
-    // Event: June 6th 2026, 7 PM – 10 PM CDT (= 00:00–03:00 UTC next day)
+    // Event: May 15th 2026, 6 PM – 9 PM CDT (= 23:00–02:00 UTC next day)
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
@@ -39,13 +39,13 @@ export async function onRequestPost(context) {
       'CALSCALE:GREGORIAN',
       'METHOD:REQUEST',
       'BEGIN:VEVENT',
-      `UID:cigars-networking-20260606@zonaro.org`,
+      `UID:cigars-networking-20260515@zonaro.org`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
-      'DTSTART:20260607T000000Z',
-      'DTEND:20260607T030000Z',
+      'DTSTART:20260515T230000Z',
+      'DTEND:20260516T020000Z',
       'SUMMARY:Cigars & Networking',
       'DESCRIPTION:A Gathering of Minds\\, A Celebration of Taste.',
-      'LOCATION:North Aurora\\, IL 60542',
+      'LOCATION:980 N Deerpath Rd\\, North Aurora\\, IL 60542',
       'STATUS:CONFIRMED',
       `ORGANIZER;CN=Cigars & Networking:MAILTO:${SENDER_EMAIL}`,
       `ATTENDEE;RSVP=TRUE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=${attendeeName}:MAILTO:${email}`,
@@ -93,7 +93,7 @@ export async function onRequestPost(context) {
                   <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#ccc;">
                     Your reservation is confirmed. We look forward to welcoming you to
                     <strong style="color:#f5f5f5;">Cigars &amp; Networking</strong> on
-                    <strong style="color:#f5f5f5;">June 6, 2026</strong>.
+                    <strong style="color:#f5f5f5;">Friday, May 15, 2026</strong>.
                   </p>
                   <!-- Event details box -->
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
@@ -103,10 +103,10 @@ export async function onRequestPost(context) {
                         Event Details
                       </p>
                       <p style="margin:0 0 6px;font-size:15px;color:#f5f5f5;">
-                        📅 &nbsp;June 6, 2026 &nbsp;·&nbsp; 7:00 PM – 10:00 PM
+                        📅 &nbsp;Friday, May 15, 2026 &nbsp;·&nbsp; 6:00 PM
                       </p>
                       <p style="margin:0;font-size:15px;color:#f5f5f5;">
-                        📍 &nbsp;North Aurora, IL 60542
+                        📍 &nbsp;980 N Deerpath Rd, North Aurora, IL 60542
                       </p>
                     </td></tr>
                   </table>
