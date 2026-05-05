@@ -166,6 +166,12 @@ h1 {
   text-transform: uppercase;
   margin-right: -0.4em;
 }
+.glass-overlay {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.12); 
+  backdrop-filter: blur(2px); /* Blurs the image/content behind the element */
+  -webkit-backdrop-filter: blur(2px); /* Safari support */
+}
 
 /* Form Container */
 .form-container {
