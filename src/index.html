@@ -3,121 +3,324 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cigars &amp; Networking | Friday, May 15, 2026 | v0.4</title>
+  <title>Zonaro Events | Elite Professional Networking</title>
 
   <!-- SEO -->
-  <meta name="description" content="A Gathering of Minds, A Celebration of Taste. Join us for an exclusive event on Friday, May 15th, 2026 in North Aurora, IL.">
-  <meta property="og:title" content="Cigars &amp; Networking">
-  <meta property="og:description" content="A Gathering of Minds, A Celebration of Taste. Friday, May 15th, 2026 — North Aurora, IL.">
+  <meta name="description" content="Discover elite networking events hosted by Zonaro. Connect with professionals in a luxury setting.">
+  <meta property="og:title" content="Zonaro Events">
+  <meta property="og:description" content="Discover elite networking events hosted by Zonaro.">
   <meta property="og:type" content="website">
 
-  <!-- Preload hero image so it paints immediately -->
-  <link rel="preload" as="image" href="cigar.webp" type="image/webp" fetchpriority="high">
-
-  <!-- Self-hosted fonts — preload the two most visible above-the-fold faces -->
+  <!-- Self-hosted fonts -->
   <link rel="preload" href="fonts/playfair-display-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/pinyon-script-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/montserrat-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Custom overrides for the master landing page */
+    .master-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+    
+    .event-card {
+      background: rgba(25, 25, 25, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .event-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-gold-light);
+    }
+    
+    .event-card h3 {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: var(--accent-gold);
+    }
+    
+    .event-card p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    
+    .event-card .date {
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
+    }
+    
+    .btn-outline {
+      display: inline-block;
+      padding: 10px 24px;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+      margin-top: auto;
+    }
+    
+    .event-card:hover .btn-outline {
+      background: var(--accent-gold);
+      color: #000;
+    }
+
+    /* Carousel Styles */
+    .carousel-section {
+      margin-top: 20px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+    
+    .carousel-section h2 {
+      font-family: var(--font-title);
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      color: var(--accent-gold-light);
+    }
+    
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      background: rgba(0,0,0,0.5);
+    }
+    
+    .carousel-track {
+      display: flex;
+      width: calc(100% * 12); /* 12 images */
+      animation: scrollCarousel 120s linear infinite; /* Slowed down */
+    }
+    
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
+    
+    .carousel-slide {
+      width: calc(100% / 12);
+      height: 400px;
+      padding-right: 15px; /* Delimiter gap between images */
+    }
+    
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    @keyframes scrollCarousel {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-100% * 11 / 12)); }
+    }
+    
+    @media (max-width: 768px) {
+      .carousel-slide {
+        height: 250px;
+      }
+    }
+
+    /* Master landing page specific header */
+    .master-header {
+      align-items: center;
+      text-align: center;
+    }
+    
+    .master-header h1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 0.85;
+      margin-bottom: 20px;
+    }
+    
+    .master-header h1 .z-font {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 300;
+      font-size: 7rem;
+      letter-spacing: -0.02em;
+      font-style: italic;
+      color: #1a1a1a;
+      text-shadow: none; /* Remove heavy shadow */
+    }
+    
+    .master-header h1 .e-font {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--accent-gold);
+      letter-spacing: 1.2em;
+      margin-top: 0;
+      margin-right: -1.2em;
+      text-shadow: none;
+    }
+
+    body.theme-premium .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600; /* Max boldness for subtitle */
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: #000; /* Pure black */
+      text-shadow: none;
+      margin-bottom: 40px;
+    }
+
+    body.theme-premium .separator {
+      background-color: #1a1a1a;
+      opacity: 0.2;
+      margin: 20px 0;
+    }
+
+    /* Override event card styles for premium theme */
+    body.theme-premium .event-card {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px; /* Elegant rounded corners */
+      box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+      padding: 50px 40px;
+      transition: all 0.4s ease;
+    }
+
+    body.theme-premium .event-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+    }
+    
+    body.theme-premium .event-card h3 {
+      font-family: 'Bodoni Moda', serif;
+      font-weight: 700;
+    }
+    
+    body.theme-premium .event-card .date {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: #000;
+      opacity: 0.9;
+    }
+
+    body.theme-premium .btn-outline {
+      border-radius: 0;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      border-color: #1a1a1a;
+      color: #1a1a1a;
+    }
+
+    body.theme-premium .event-card:hover .btn-outline {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    body.theme-premium .footer {
+      color: #777;
+      border-top-color: rgba(0,0,0,0.05);
+    }
+  </style>
 </head>
-<body>
+<body class="theme-premium">
 
   <!-- Full Bleed Background -->
+  <div class="highlight-overlay"></div>
   <div class="hero-bg"></div>
   <canvas id="smoke-canvas"></canvas>
 
-  <div class="page-wrapper">
+  <div class="master-wrapper">
     
-    <header class="header">
-      <h1>Cigars &amp; Networking</h1>
+    <header class="header master-header">
+      <h1>
+        <span class="z-font">ZonaRo</span>
+        <span class="e-font">EVENTS</span>
+      </h1>
       <div class="separator"></div>
-      <div class="subtitle">A Gathering of Minds,<br>A Celebration of Taste</div>
-      <div class="small-caps-subtitle glass-overlay">
-        <h2>FRIDAY, MAY 15, 2026</h2><br>
-        <h3 style="display:inline-block; margin-top: 8px;">HOST: ALEX RADU</h3><br>
-        <h3 style="display:inline-block; margin-top: 8px;">TIME: 6:00 PM</h3><br>
-        <h3 style="display:inline-block; margin-top: 8px;">ADDRESS: 980 N Deerpath Rd, North Aurora, IL 60542</h3><br>
-        <h3 style="display:inline-block; margin-top: 8px;">Come for the cigars, stay for the connections.</h3>
-      </div>
+      <div class="subtitle" style="margin-bottom: 20px;">Elite Professional Networking</div>
+      <p style="text-align: center; max-width: 600px; margin: 0 auto; opacity: 0.8; line-height: 1.6;">
+        Curated gatherings designed to connect industry leaders, foster meaningful relationships, and celebrate success in an atmosphere of refined elegance.
+      </p>
     </header>
 
-    <div class="form-container">  
-      
-      <div id="successMessage" class="success-message">
-        <h2>Confirmed</h2>
-        <p>Your RSVP has been received. You will receive a calendar invitation shortly.</p>
-        <div class="success-actions">
-          <button type="button" id="backBtn" class="action-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            BACK
-          </button>
-          <button type="button" id="shareBtn" class="action-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            SHARE
-          </button>
+    <!-- Past Events Carousel (Moved to Top) -->
+    <div class="carousel-section">
+      <div class="carousel-container">
+        <div class="carousel-track">
+          <!-- 12 Carousel Images -->
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_1_1778021970394.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_2_1778021983599.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_3_1778021996028.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_4_1778022008687.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_5_1778022031671.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_6_1778022046202.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_7_1778022058362.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_8_1778022070485.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_9_1778022098117.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_10_1778022110424.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_11_1778022122689.png" alt="Networking Event" loading="lazy"></div>
+          <div class="carousel-slide"><img src="assets/carousel/carousel_networking_12_1778022135652.png" alt="Networking Event" loading="lazy"></div>
         </div>
       </div>
-
-      <form id="rsvpForm">
-        <div class="form-row">
-          <div class="input-group">
-            <input type="text" id="fname" name="fname" placeholder="FIRST NAME" required autocomplete="given-name">
-          </div>
-          <div class="input-group">
-            <input type="text" id="lname" name="lname" placeholder="LAST NAME" required autocomplete="family-name">
-          </div>
-        </div>
-
-        <div class="input-group full-width">
-          <input type="tel" id="phone" name="phone" placeholder="PHONE NUMBER" autocomplete="tel">
-        </div>
-        
-        <div class="input-group full-width">
-          <input type="email" id="email" name="email" placeholder="EMAIL ADDRESS" required autocomplete="email">
-        </div>
-
-        <div class="input-group full-width">
-          <input type="text" id="company" name="company" placeholder="COMPANY NAME" autocomplete="organization">
-        </div>
-
-        <div class="switch-container">
-          <span class="switch-label">I AM BRINGING A GUEST (+1)</span>
-          <label class="switch">
-            <input type="checkbox" id="plusone" name="plusone">
-            <span class="slider round"></span>
-          </label>
-        </div>
-
-        <div id="plusOneFields" class="plus-one-fields hidden">
-          <div class="fields-wrapper">
-            <div class="form-row">
-              <div class="input-group">
-                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST NAME">
-              </div>
-              <div class="input-group">
-                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST NAME">
-              </div>
-            </div>
-            <div class="input-group full-width">
-              <input type="email" id="guest_email" name="guest_email" placeholder="GUEST EMAIL (OPTIONAL)">
-            </div>
-            <div class="input-group full-width">
-              <input type="text" id="guest_company" name="guest_company" placeholder="GUEST COMPANY (OPTIONAL)">
-            </div>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button type="submit" id="submitBtn">ACCEPT INVITATION</button>
-        </div>
-      </form>
-
     </div>
+
+    <div class="event-grid">
+      <!-- Event 1: Cigars & Networking -->
+      <a href="/cigars" class="event-card">
+        <div class="date">May 15, 2026</div>
+        <h3>Cigars &amp; Networking</h3>
+        <p>A Gathering of Minds, A Celebration of Taste. Join us for premium cigars and high-level networking.</p>
+        <span class="btn-outline">RSVP NOW</span>
+      </a>
+
+      <!-- Event 3: Romanian Network -->
+      <a href="/ronet" class="event-card">
+        <div class="date">June 6, 2026</div>
+        <h3>Romanian Network</h3>
+        <p>Connecting Romanian professionals and business leaders in an elegant daytime setting.</p>
+        <span class="btn-outline">RSVP NOW</span>
+      </a>
+    </div>
+
   </div>
 
-  <footer class="footer">&copy; burntone 2026 &nbsp;|&nbsp; v0.3</footer>
+  <footer class="footer">&copy; burntone 2026 &nbsp;|&nbsp; Zonaro Events Hub</footer>
 
-  <!-- Three.js and main script both deferred — load after DOM, in order -->
+  <!-- Three.js and main script for background effect -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="script.js" defer></script>
 </body>

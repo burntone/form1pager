@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Romanian Network | Saturday, June 6, 2026</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Join us for the Romanian Network event on Saturday, June 6th, 2026 in North Aurora, IL.">
+  <meta property="og:title" content="Romanian Network">
+  <meta property="og:description" content="Saturday, June 6th, 2026 — North Aurora, IL.">
+  <meta property="og:type" content="website">
+
+  <!-- Preload hero image so it paints immediately -->
+  <link rel="preload" as="image" href="../assets/ronet_bg.png" type="image/png" fetchpriority="high">
+
+  <!-- Self-hosted fonts -->
+  <link rel="preload" href="../fonts/playfair-display-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/pinyon-script-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Redesign: Premium Dark Frosted Glass */
+    
+    .header h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 5.5rem;
+      color: #ffffff;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      color: #F1E5AC;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      margin-top: -10px;
+      margin-bottom: 2.5rem;
+    }
+    
+    .small-caps-subtitle {
+      background: rgba(10, 10, 10, 0.15); /* Ultra-translucent dark glass */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 180, 127, 0.2); /* Subtle gold border */
+      border-radius: 20px;
+      padding: 30px;
+      color: #f5f5f5;
+      text-shadow: none;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    
+    .small-caps-subtitle h2 {
+      color: #F1E5AC;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .small-caps-subtitle h3 {
+      color: #e0e0e0;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .form-container {
+      background: rgba(10, 10, 10, 0.15); /* Ultra-translucent dark glass */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(226, 180, 127, 0.2);
+      border-radius: 30px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      padding: 3.5rem;
+    }
+    
+    .form-container input[type="text"],
+    .form-container input[type="email"],
+    .form-container input[type="tel"] {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(226, 180, 127, 0.3);
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: left; /* Better readability for forms */
+    }
+    
+    .form-container input::placeholder {
+      color: #ffffff;
+    }
+    
+    .form-container input:focus {
+      background: rgba(0, 0, 0, 0.6);
+      border-color: var(--accent-gold);
+    }
+
+    .switch-label {
+      color: #ffffff;
+      opacity: 0.9;
+    }
+    
+    #submitBtn {
+      background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 50%, var(--accent-gold-dark) 100%);
+      color: #000000;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 20px;
+      margin-top: 15px;
+      box-shadow: 0 10px 25px rgba(226, 180, 127, 0.2);
+    }
+    
+    #submitBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(226, 180, 127, 0.3);
+      filter: brightness(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Full Bleed Background -->
+  <div class="highlight-overlay"></div>
+  <div class="hero-bg ronet-bg"></div>
+  <canvas id="smoke-canvas"></canvas>
+
+  <div class="page-wrapper">
+    
+    <header class="header">
+      <h1>Romanian Network</h1>
+      <div class="separator"></div>
+      <div class="subtitle">Connecting Professionals</div>
+      <div class="small-caps-subtitle glass-overlay">
+        <h2>Saturday, June 6, 2026</h2><br>
+        <h3 style="display:inline-block; margin-top: 8px;">Host: Alex Radu</h3><br>
+        <h3 style="display:inline-block; margin-top: 8px;">Time: 4:00 PM</h3><br>
+        <h3 style="display:inline-block; margin-top: 8px;">Address: 980 N Deerpath Rd, North Aurora, IL 60542</h3><br>
+        <h3 style="display:inline-block; margin-top: 24px; font-family: 'Pinyon Script', cursive; font-size: 2.2rem; text-transform: none; color: #F1E5AC; letter-spacing: normal;">Come for the cigars, stay for the connections.</h3>
+      </div>
+    </header>
+
+    <div class="form-container">  
+      
+      <div id="successMessage" class="success-message">
+        <h2>Confirmed</h2>
+        <p>Your RSVP has been received. You will receive a calendar invitation shortly.</p>
+        <div class="success-actions">
+          <button type="button" id="backBtn" class="action-btn icon-only-btn" title="Back">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 18 4 12 10 6"></polyline></svg>
+          </button>
+          <button type="button" id="shareBtn" class="action-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            SHARE
+          </button>
+        </div>
+      </div>
+
+      <form id="rsvpForm">
+        <input type="hidden" name="eventId" value="ronet">
+        <div class="form-row">
+          <div class="input-group">
+            <input type="text" id="fname" name="fname" placeholder="FIRST NAME" required autocomplete="given-name">
+          </div>
+          <div class="input-group">
+            <input type="text" id="lname" name="lname" placeholder="LAST NAME" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="input-group full-width">
+          <input type="tel" id="phone" name="phone" placeholder="PHONE NUMBER" autocomplete="tel">
+        </div>
+        
+        <div class="input-group full-width">
+          <input type="email" id="email" name="email" placeholder="EMAIL ADDRESS" required autocomplete="email">
+        </div>
+
+        <div class="input-group full-width">
+          <input type="text" id="company" name="company" placeholder="COMPANY NAME" autocomplete="organization">
+        </div>
+
+        <div class="switch-container">
+          <span class="switch-label">I AM BRINGING A GUEST (+1)</span>
+          <label class="switch">
+            <input type="checkbox" id="plusone" name="plusone">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div id="plusOneFields" class="plus-one-fields hidden">
+          <div class="fields-wrapper">
+            <div class="form-row">
+              <div class="input-group">
+                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST NAME">
+              </div>
+              <div class="input-group">
+                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST NAME">
+              </div>
+            </div>
+            <div class="input-group full-width">
+              <input type="email" id="guest_email" name="guest_email" placeholder="GUEST EMAIL (OPTIONAL)">
+            </div>
+            <div class="input-group full-width">
+              <input type="text" id="guest_company" name="guest_company" placeholder="GUEST COMPANY (OPTIONAL)">
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">ACCEPT INVITATION</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <footer class="footer">&copy; burntone 2026 &nbsp;|&nbsp; v0.4</footer>
+
+  <!-- Three.js and main script both deferred — load after DOM, in order -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="../script.js" defer></script>
+</body>
+</html>

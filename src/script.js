@@ -8,26 +8,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const plusOneFields = document.getElementById('plusOneFields');
   const guestFname = document.getElementById('guest_fname');
   const guestLname = document.getElementById('guest_lname');
+  const guestEmail = document.getElementById('guest_email');
+  const guestCompany = document.getElementById('guest_company');
 
-  plusOneToggle.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      plusOneFields.classList.remove('hidden');
-      guestFname.required = true;
-      guestLname.required = true;
-    } else {
-      plusOneFields.classList.add('hidden');
-      guestFname.required = false;
-      guestLname.required = false;
-      guestFname.value = '';
-      guestLname.value = '';
-      document.getElementById('guest_email').value = '';
-      document.getElementById('guest_company').value = '';
-    }
-  });
+  if (plusOneToggle && plusOneFields) {
+    const toggleFields = (show) => {
+      if (show) {
+        plusOneFields.classList.remove('hidden');
+        if (guestFname) guestFname.required = true;
+        if (guestLname) guestLname.required = true;
+      } else {
+        plusOneFields.classList.add('hidden');
+        if (guestFname) { guestFname.required = false; guestFname.value = ''; }
+        if (guestLname) { guestLname.required = false; guestLname.value = ''; }
+        if (guestEmail) guestEmail.value = '';
+        if (guestCompany) guestCompany.value = '';
+      }
+    };
+
+    plusOneToggle.addEventListener('change', (e) => {
+      toggleFields(e.target.checked);
+    });
+
+    // Handle initial state
+    toggleFields(plusOneToggle.checked);
+  }
 
   // Form Submission
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
     
     submitBtn.disabled = true;
     submitBtn.textContent = 'SUBMITTING...';
@@ -77,7 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const shareBtn = document.getElementById('shareBtn');
   const shareUrl = window.location.href;
-  const shareText = "A Gathering of Minds, A Celebration of Taste. Join me at Cigars & Networking on May 15th!";
+  const pageTitle = document.title.split('|')[0].trim();
+  const pageDesc = "Join me for an exclusive evening of networking and refined tastes.";
+  const shareText = `${pageDesc} RSVP here:`;
 
   if (shareBtn) {
     shareBtn.addEventListener('click', async (e) => {
@@ -86,29 +98,29 @@ document.addEventListener('DOMContentLoaded', () => {
       if (navigator.share) {
         try {
           await navigator.share({
-            title: 'Cigars & Networking',
+            title: pageTitle,
             text: shareText,
             url: shareUrl
           });
         } catch (err) {
-          console.error('Share failed:', err);
+          if (err.name !== 'AbortError') console.error('Share failed:', err);
         }
       } else {
         // Fallback: Copy to clipboard
-        navigator.clipboard.writeText(`${shareText} ${shareUrl}`).then(() => {
-          const originalText = shareBtn.textContent;
+        try {
+          await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+          const originalText = shareBtn.innerHTML;
           shareBtn.textContent = 'LINK COPIED!';
-          setTimeout(() => {
-            shareBtn.textContent = originalText;
-          }, 3000);
-        }).catch(err => {
+          setTimeout(() => { shareBtn.innerHTML = originalText; }, 3000);
+        } catch (err) {
           console.error('Could not copy text: ', err);
-          alert('Sharing is not supported on this browser. Link: ' + shareUrl);
-        });
+          alert('Link: ' + shareUrl);
+        }
       }
     });
   }
-
+  }
+  
   // --- WEBGL SMOKE SHADER ---
   const canvas = document.getElementById('smoke-canvas');
   if (canvas && window.THREE) {

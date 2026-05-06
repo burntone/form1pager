@@ -62,6 +62,26 @@
   --font-sans: 'Montserrat', sans-serif;
 }
 
+body.theme-light {
+  --primary-bg: #f5f5f5;
+  --text-main: #111111;
+  --accent-gold: #c28847; /* Slightly darker gold for light theme */
+  --accent-gold-dark: #a16b32;
+  --accent-gold-light: #d1a56f;
+  --border-color: rgba(194, 136, 71, 0.4);
+}
+
+body.theme-premium {
+  --primary-bg: #ffffff;
+  --text-main: #1a1a1a;
+  --accent-gold: #b8860b;
+  --accent-gold-dark: #916a08;
+  --accent-gold-light: #daa520;
+  --border-color: rgba(184, 134, 11, 0.2);
+  --gradient-base: radial-gradient(circle at 50% 30%, #ffffff 0%, #fdfcfb 40%, #e2d1c3 100%);
+  --subtle-pattern: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -69,12 +89,43 @@
 }
 
 body {
-  background-color: var(--primary-bg);
+  background: var(--primary-bg);
   color: var(--text-main);
   font-family: var(--font-sans);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+}
+
+body.theme-light, body.theme-premium {
+  background: var(--gradient-base);
+  background-attachment: fixed;
+  position: relative;
+}
+
+body.theme-light::before, body.theme-premium::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--subtle-pattern);
+  opacity: 0.05; 
+  pointer-events: none;
+  z-index: 10; /* Put pattern on top of EVERYTHING for tactile feel */
+}
+
+/* Add a global highlight overlay that sits above background images but below content */
+.highlight-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Full Bleed Background Overlay */
@@ -84,12 +135,21 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.45)), url('cigar.webp');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.45)), url('assets/cigar.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: -1;
   animation: slowZoom 40s infinite alternate ease-in-out;
+}
+
+body.theme-premium .hero-bg {
+  background-image: var(--gradient-base);
+  animation: none;
+}
+
+.ronet-bg {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.3)), url('assets/ronet_bg.png');
 }
 
 @keyframes slowZoom {
@@ -163,7 +223,6 @@ h1 {
   font-weight: 400;
   letter-spacing: 0.4em;
   color: rgba(255,255,255,0.7);
-  text-transform: uppercase;
   margin-right: -0.4em;
 }
 .glass-overlay {
@@ -197,15 +256,17 @@ h1 {
 
 .success-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 2.5rem;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  width: auto;
 }
 
 .success-actions .action-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   background: transparent;
   color: var(--text-main);
@@ -218,12 +279,30 @@ h1 {
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 4px;
+  width: auto; /* Override the default 100% width on generic buttons */
 }
 
 .success-actions .action-btn:hover {
   background: rgba(226, 180, 127, 0.1);
   color: var(--accent-gold-light);
   border-color: var(--accent-gold);
+  filter: none;
+  transform: none;
+}
+
+.success-actions .icon-only-btn {
+  padding: 0.6rem;
+  border: none;
+  border-radius: 50%;
+  color: var(--text-main);
+  opacity: 0.8;
+}
+
+.success-actions .icon-only-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: transparent;
+  color: white;
+  opacity: 1;
 }
 
 .success-actions .action-btn svg {

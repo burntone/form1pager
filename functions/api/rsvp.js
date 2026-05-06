@@ -1,16 +1,21 @@
 export async function onRequestPost(context) {
   try {
-    // ── 1. Auth ─────────────────────────────────────────────────────────────
+    // ── 1. Auth & Env ────────────────────────────────────────────────────────
     const RESEND_API_KEY = context.env.RESEND_API_KEY;
+    const WEBHOOK_URL = context.env.WEBHOOK_URL;
+
     if (!RESEND_API_KEY) {
       console.error('RESEND_API_KEY environment variable is not set.');
-      return new Response(JSON.stringify({ error: 'Server misconfiguration.' }), { status: 500 });
+      return new Response(JSON.stringify({ error: 'Server misconfiguration (Resend).' }), { status: 500 });
     }
 
     // ── 2. Parse body ────────────────────────────────────────────────────────
     const body = await context.request.json();
-    const { fname, lname, email, company, phone, plusone,
-            guest_fname, guest_lname, guest_email, guest_company } = body;
+    const { 
+      fname, lname, email, company, phone, plusone,
+      guest_fname, guest_lname, guest_email, guest_company,
+      eventId 
+    } = body;
 
     if (!fname || !lname || !email) {
       return new Response(JSON.stringify({ error: 'Missing required fields.' }), { status: 400 });
@@ -26,28 +31,70 @@ export async function onRequestPost(context) {
                   + `\nGuest Company: ${guest_company || 'N/A'}`;
     }
 
-    // ── 3. Config ────────────────────────────────────────────────────────────
+    // ── 3. Event Configuration ───────────────────────────────────────────────
+    const events = {
+      cigars: {
+        id: 'cigars-networking',
+        name: 'Cigars & Networking',
+        dateStr: 'Friday, May 15, 2026',
+        timeStr: '6:00 PM',
+        locationHtml: '980 N Deerpath Rd<br><span style="color:#999;font-size:13px;line-height:1.6;">North Aurora, IL 60542</span>',
+        locationICS: '980 N Deerpath Rd\\, North Aurora\\, IL 60542',
+        startICS: '20260515T230000Z',
+        endICS: '20260516T020000Z',
+        color: '#d4af37'
+      },
+      ronet: {
+        id: 'romanian-network',
+        name: 'Romanian Network',
+        dateStr: 'Saturday, June 6, 2026',
+        timeStr: '4:00 PM',
+        locationHtml: '980 N Deerpath Rd<br><span style="color:#999;font-size:13px;line-height:1.6;">North Aurora, IL 60542</span>',
+        locationICS: '980 N Deerpath Rd\\, North Aurora\\, IL 60542',
+        startICS: '20260606T210000Z',
+        endICS: '20260607T000000Z',
+        color: '#c28847'
+      }
+    };
+
+    const evt = events[eventId] || events['cigars']; // Fallback to cigars if not provided
     const SENDER_EMAIL = 'events@zonaro.org';
     const ADMIN_EMAIL  = 'rsvp@zonaro.org';
 
-    // ── 4. ICS calendar attachment ───────────────────────────────────────────
-    // Event: May 15th 2026, 6 PM – 9 PM CDT (= 23:00–02:00 UTC next day)
+    // ── 4. Webhook to Google Sheets (Apps Script) ────────────────────────────
+    let webhookPromise = Promise.resolve();
+    if (WEBHOOK_URL) {
+      webhookPromise = fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: attendeeName,
+          email: email,
+          phone: phone || '',
+          company: companyText,
+          plus_one: plusOneText,
+          event_id: evt.name
+        })
+      }).catch(err => console.error('Webhook Error:', err));
+    }
+
+    // ── 5. ICS calendar attachment ───────────────────────────────────────────
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Cigars and Networking//EN',
+      'PRODID:-//Zonaro Events//EN',
       'CALSCALE:GREGORIAN',
       'METHOD:REQUEST',
       'BEGIN:VEVENT',
-      `UID:cigars-networking-20260515@zonaro.org`,
+      `UID:${evt.id}-2026@zonaro.org`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
-      'DTSTART:20260515T230000Z',
-      'DTEND:20260516T020000Z',
-      'SUMMARY:Cigars & Networking',
-      'DESCRIPTION:A Gathering of Minds\\, A Celebration of Taste.',
-      'LOCATION:980 N Deerpath Rd\\, North Aurora\\, IL 60542',
+      `DTSTART:${evt.startICS}`,
+      `DTEND:${evt.endICS}`,
+      `SUMMARY:${evt.name}`,
+      `DESCRIPTION:Join us for ${evt.name}.`,
+      `LOCATION:${evt.locationICS}`,
       'STATUS:CONFIRMED',
-      `ORGANIZER;CN=Cigars & Networking:MAILTO:${SENDER_EMAIL}`,
+      `ORGANIZER;CN=${evt.name}:MAILTO:${SENDER_EMAIL}`,
       `ATTENDEE;RSVP=TRUE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;CN=${attendeeName}:MAILTO:${email}`,
       'END:VEVENT',
       'END:VCALENDAR',
@@ -55,7 +102,7 @@ export async function onRequestPost(context) {
 
     const icsBase64 = btoa(icsContent);
 
-    // ── 5. Build Resend payloads ─────────────────────────────────────────────
+    // ── 6. Build Resend payloads ─────────────────────────────────────────────
     const RESEND_URL = 'https://api.resend.com/emails';
     const headers = {
       'Content-Type': 'application/json',
@@ -64,9 +111,9 @@ export async function onRequestPost(context) {
 
     // Attendee confirmation email
     const attendeePayload = {
-      from: `Cigars & Networking <${SENDER_EMAIL}>`,
+      from: `${evt.name} <${SENDER_EMAIL}>`,
       to: [email],
-      subject: 'Your Invitation is Confirmed — Cigars & Networking',
+      subject: `Your Invitation is Confirmed — ${evt.name}`,
       html: `
         <!DOCTYPE html>
         <html lang="en">
@@ -81,8 +128,8 @@ export async function onRequestPost(context) {
                   <p style="margin:0;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#888;">
                     An Exclusive Invitation
                   </p>
-                  <h1 style="margin:12px 0 0;font-size:28px;font-weight:400;color:#d4af37;letter-spacing:0.04em;">
-                    Cigars &amp; Networking
+                  <h1 style="margin:12px 0 0;font-size:28px;font-weight:400;color:${evt.color};letter-spacing:0.04em;">
+                    ${evt.name}
                   </h1>
                 </td></tr>
                 <!-- Body -->
@@ -92,31 +139,42 @@ export async function onRequestPost(context) {
                   </p>
                   <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#ccc;">
                     Your reservation is confirmed. We look forward to welcoming you to
-                    <strong style="color:#f5f5f5;">Cigars &amp; Networking</strong> on
-                    <strong style="color:#f5f5f5;">Friday, May 15, 2026</strong>.
+                    <strong style="color:#f5f5f5;">${evt.name}</strong> on
+                    <strong style="color:#f5f5f5;">${evt.dateStr}</strong>.
                   </p>
                   <!-- Event details box -->
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
-                         style="background:#111;border-left:3px solid #d4af37;margin:28px 0;">
-                    <tr><td style="padding:20px 24px;">
-                      <p style="margin:0 0 8px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#888;">
+                         style="background:#141414;border-left:2px solid ${evt.color};margin:32px 0;">
+                    <tr><td style="padding:28px 32px;">
+                      <p style="margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#777;">
                         Event Details
                       </p>
-                      <p style="margin:0 0 6px;font-size:15px;color:#f5f5f5;">
-                        📅 &nbsp;Friday, May 15, 2026 &nbsp;·&nbsp; 6:00 PM
-                      </p>
-                      <p style="margin:0;font-size:15px;color:#f5f5f5;">
-                        📍 &nbsp;980 N Deerpath Rd, North Aurora, IL 60542
-                      </p>
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td width="80" style="padding-bottom:12px;vertical-align:top;">
+                            <span style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:${evt.color};">When</span>
+                          </td>
+                          <td style="padding-bottom:12px;">
+                            <p style="margin:0;font-size:15px;color:#f5f5f5;letter-spacing:0.02em;">${evt.dateStr}<br><span style="color:#999;font-size:13px;line-height:1.6;">${evt.timeStr}</span></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="80" style="vertical-align:top;">
+                            <span style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:${evt.color};">Where</span>
+                          </td>
+                          <td>
+                            <p style="margin:0;font-size:15px;color:#f5f5f5;letter-spacing:0.02em;">${evt.locationHtml}</p>
+                          </td>
+                        </tr>
+                      </table>
                     </td></tr>
                   </table>
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#aaa;">
+                  <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#aaa;">
                     A calendar invite is attached to this email. Dress code is smart casual.
                   </p>
-                  <p style="margin:32px 0 0;font-size:15px;line-height:1.7;color:#ccc;">
+                  <p style="margin:40px 0 0;font-size:15px;line-height:1.8;color:#ccc;">
                     Warm regards,<br>
-                    <span style="color:#d4af37;">Alex Radu</span><br>
-                    <span style="color:#666;font-size:13px;">Host, Cigars &amp; Networking</span>
+                    <span style="color:${evt.color};">Zonaro Events Team</span>
                   </p>
                 </td></tr>
                 <!-- Footer -->
@@ -131,7 +189,7 @@ export async function onRequestPost(context) {
         </body></html>
       `,
       attachments: [{
-        filename: 'cigars-networking-invite.ics',
+        filename: `${evt.id}-invite.ics`,
         content: icsBase64,
         content_type: 'text/calendar; method=REQUEST',
       }],
@@ -141,9 +199,9 @@ export async function onRequestPost(context) {
     const adminPayload = {
       from: `RSVP System <${SENDER_EMAIL}>`,
       to: [ADMIN_EMAIL],
-      subject: `cigars event confirmation`,
+      subject: `${evt.name} event confirmation`,
       text: [
-        'New RSVP Received',
+        `New RSVP Received for ${evt.name}`,
         '─────────────────',
         `Name:    ${attendeeName}`,
         `Email:   ${email}`,
@@ -153,29 +211,26 @@ export async function onRequestPost(context) {
       ].join('\n'),
     };
 
-    // ── 6. Send both emails concurrently ─────────────────────────────────────
+    // ── 7. Send Resend emails concurrently with Webhook ──────────────────────
     const [attendeeRes, adminRes] = await Promise.all([
       fetch(RESEND_URL, { method: 'POST', headers, body: JSON.stringify(attendeePayload) }),
       fetch(RESEND_URL, { method: 'POST', headers, body: JSON.stringify(adminPayload) }),
+      webhookPromise // Don't wait for response, just run it concurrently
     ]);
 
-    // Resend returns 200 on success
     if (!attendeeRes.ok || !adminRes.ok) {
-      const [attendeeErr, adminErr] = await Promise.all([
-        attendeeRes.text(),
-        adminRes.text(),
-      ]);
-      console.error('Resend attendee error:', attendeeRes.status, attendeeErr);
-      console.error('Resend admin error:',    adminRes.status,    adminErr);
-      return new Response(JSON.stringify({ error: 'Failed to send confirmation email.' }), { status: 500 });
+      const aData = await attendeeRes.json();
+      console.error('Resend Error (Attendee):', aData);
+      return new Response(JSON.stringify({ error: 'Failed to send confirmation emails.' }), { status: 502 });
     }
 
     return new Response(JSON.stringify({ success: true }), {
-      headers: { 'Content-Type': 'application/json' },
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
     });
 
-  } catch (error) {
-    console.error('RSVP handler error:', error);
+  } catch (err) {
+    console.error('Unhandled Error:', err.message);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
   }
 }

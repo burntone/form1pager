@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cigars &amp; Networking | Friday, May 15, 2026 | v0.4</title>
+
+  <!-- SEO -->
+  <meta name="description" content="A Gathering of Minds, A Celebration of Taste. Join us for an exclusive event on Friday, May 15th, 2026 in North Aurora, IL.">
+  <meta property="og:title" content="Cigars &amp; Networking">
+  <meta property="og:description" content="A Gathering of Minds, A Celebration of Taste. Friday, May 15th, 2026 — North Aurora, IL.">
+  <meta property="og:type" content="website">
+
+  <!-- Preload hero image so it paints immediately -->
+  <link rel="preload" as="image" href="../assets/cigar.webp" type="image/webp" fetchpriority="high">
+
+  <!-- Self-hosted fonts — preload the two most visible above-the-fold faces -->
+  <link rel="preload" href="../fonts/playfair-display-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fonts/pinyon-script-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- Full Bleed Background -->
+  <div class="hero-bg"></div>
+  <canvas id="smoke-canvas"></canvas>
+
+  <div class="page-wrapper">
+    
+    <header class="header">
+      <h1>Cigars &amp; Networking</h1>
+      <div class="separator"></div>
+      <div class="subtitle">A Gathering of Minds,<br>A Celebration of Taste</div>
+      <div class="small-caps-subtitle glass-overlay">
+        <h2>Friday, May 15, 2026</h2><br>
+        <h3 style="display:inline-block; margin-top: 8px;">Host: Alex Radu</h3><br>
+        <h3 style="display:inline-block; margin-top: 8px;">Time: 6:00 PM</h3><br>
+        <h3 style="display:inline-block; margin-top: 8px;">Address: 980 N Deerpath Rd, North Aurora, IL 60542</h3><br>
+        <h3 style="display:inline-block; margin-top: 24px; font-family: 'Pinyon Script', cursive; font-size: 2.2rem; text-transform: none; color: #F1E5AC; letter-spacing: normal;">Come for the cigars, stay for the connections.</h3>
+      </div>
+    </header>
+
+    <div class="form-container">  
+      
+      <div id="successMessage" class="success-message">
+        <h2>Confirmed</h2>
+        <p>Your RSVP has been received. You will receive a calendar invitation shortly.</p>
+        <div class="success-actions">
+          <button type="button" id="backBtn" class="action-btn icon-only-btn" title="Back">
+            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 18 4 12 10 6"></polyline></svg>
+          </button>
+          <button type="button" id="shareBtn" class="action-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            SHARE
+          </button>
+        </div>
+      </div>
+
+      <form id="rsvpForm">
+        <input type="hidden" name="eventId" value="cigars">
+        <div class="form-row">
+          <div class="input-group">
+            <input type="text" id="fname" name="fname" placeholder="FIRST NAME" required autocomplete="given-name">
+          </div>
+          <div class="input-group">
+            <input type="text" id="lname" name="lname" placeholder="LAST NAME" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="input-group full-width">
+          <input type="tel" id="phone" name="phone" placeholder="PHONE NUMBER" autocomplete="tel">
+        </div>
+        
+        <div class="input-group full-width">
+          <input type="email" id="email" name="email" placeholder="EMAIL ADDRESS" required autocomplete="email">
+        </div>
+
+        <div class="input-group full-width">
+          <input type="text" id="company" name="company" placeholder="COMPANY NAME" autocomplete="organization">
+        </div>
+
+        <div class="switch-container">
+          <span class="switch-label">I AM BRINGING A GUEST (+1)</span>
+          <label class="switch">
+            <input type="checkbox" id="plusone" name="plusone">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div id="plusOneFields" class="plus-one-fields hidden">
+          <div class="fields-wrapper">
+            <div class="form-row">
+              <div class="input-group">
+                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST NAME">
+              </div>
+              <div class="input-group">
+                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST NAME">
+              </div>
+            </div>
+            <div class="input-group full-width">
+              <input type="email" id="guest_email" name="guest_email" placeholder="GUEST EMAIL (OPTIONAL)">
+            </div>
+            <div class="input-group full-width">
+              <input type="text" id="guest_company" name="guest_company" placeholder="GUEST COMPANY (OPTIONAL)">
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">ACCEPT INVITATION</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <footer class="footer">&copy; burntone 2026 &nbsp;|&nbsp; v0.3</footer>
+
+  <!-- Three.js and main script both deferred — load after DOM, in order -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="../script.js" defer></script>
+</body>
+</html>

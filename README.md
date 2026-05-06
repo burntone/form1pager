@@ -50,19 +50,30 @@ Currently, the system sends an email notification to `rsvp@zonaro.org` whenever 
 
 ---
 
-### Option 2: Google Sheets or Airtable (Webhook Integration)
+### Option 2: Google Sheets (Direct Integration) or Airtable
 *Best if you want an instant, powerful, shareable table without having to build and style a custom admin dashboard.*
 
-**Implementation Steps:**
+**Implementation Steps for Google Sheets (No Zapier Needed):**
 
-1. **Set up the Destination (Google Sheets or Airtable):**
-   - **For Google Sheets:** Use a service like **Make.com** (formerly Integromat) or **Zapier** to create a simple workflow: *When a Webhook is received -> Add a row to Google Sheets*. It will generate a unique Webhook URL for you.
-   - **For Airtable:** You can use Airtable's native Webhooks in their Automations tab, or their REST API.
+1. **Create a Google Apps Script Webhook:**
+   - Create a new Google Sheet.
+   - Go to **Extensions** > **Apps Script**.
+   - Paste the following code into the editor:
+     ```javascript
+     function doPost(e) {
+       var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+       var data = JSON.parse(e.postData.contents);
+       sheet.appendRow([new Date(), data.name, data.email, data.phone, data.company, data.plus_one, data.event_id]);
+       return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+     }
+     ```
+   - Click **Deploy** > **New deployment**. Select type **Web app**.
+   - Set **Execute as** to *Me*, and **Who has access** to *Anyone*. Click Deploy and copy the Web app URL.
 2. **Add the Webhook URL to Cloudflare:**
    - Go to your Cloudflare Pages project > **Settings** > **Environment variables**.
    - Add a new variable:
      - **Variable name:** `WEBHOOK_URL`
-     - **Value:** `https://your-zapier-or-make-webhook-url-here`
+     - **Value:** `https://script.google.com/macros/s/.../exec`
 3. **Update the Backend (`functions/api/rsvp.js`):**
    - Add the following code alongside the Resend email fetch to instantly forward the data to your spreadsheet:
      ```javascript
