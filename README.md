@@ -59,14 +59,23 @@ Currently, the system sends an email notification to `rsvp@zonaro.org` whenever 
    - Create a new Google Sheet.
    - Go to **Extensions** > **Apps Script**.
    - Paste the following code into the editor:
-     ```javascript
-     function doPost(e) {
-       var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-       var data = JSON.parse(e.postData.contents);
-       sheet.appendRow([new Date(), data.name, data.email, data.phone, data.company, data.plus_one, data.event_id]);
-       return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
-     }
-     ```
+      ```javascript
+      function doPost(e) {
+        var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+        var data = JSON.parse(e.postData.contents);
+        
+        // Check for duplicates (Search Column C for Email and Column G for Event ID)
+        var rows = sheet.getDataRange().getValues();
+        for (var i = 1; i < rows.length; i++) {
+          if (rows[i][2] === data.email && rows[i][6] === data.event_id) {
+            return ContentService.createTextOutput("Duplicate").setMimeType(ContentService.MimeType.TEXT);
+          }
+        }
+        
+        sheet.appendRow([new Date(), data.name, data.email, data.phone, data.company, data.plus_one, data.event_id]);
+        return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+      }
+      ```
    - Click **Deploy** > **New deployment**. Select type **Web app**.
    - Set **Execute as** to *Me*, and **Who has access** to *Anyone*. Click Deploy and copy the Web app URL.
 2. **Add the Webhook URL to Cloudflare:**

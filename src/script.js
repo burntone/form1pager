@@ -45,6 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     data.plusone = formData.has('plusone');
+    
+    // Detect eventId from path
+    const path = window.location.pathname;
+    if (path.includes('/ronet')) {
+      data.eventId = 'ronet';
+    } else if (path.includes('/cigars')) {
+      data.eventId = 'cigars';
+    } else {
+      data.eventId = 'cigars'; // default
+    }
 
     try {
       const response = await fetch('/api/rsvp', {
@@ -62,7 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
         form.style.display = 'none'; // hide form after success
       } else {
         const err = await response.json();
-        alert('Error: ' + (err.error || 'Failed to submit RSVP. Please try again.'));
+        if (response.status === 409) {
+          alert(err.error);
+        } else {
+          alert('Error: ' + (err.error || 'Failed to submit RSVP. Please try again.'));
+        }
       }
     } catch (error) {
       alert('An error occurred. Please try again later.');

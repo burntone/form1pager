@@ -62,20 +62,58 @@ export async function onRequestPost(context) {
     const ADMIN_EMAIL  = 'rsvp@zonaro.org';
 
     // ── 4. Webhook to Google Sheets (Apps Script) ────────────────────────────
-    let webhookPromise = Promise.resolve();
     if (WEBHOOK_URL) {
-      webhookPromise = fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: attendeeName,
-          email: email,
-          phone: phone || '',
-          company: companyText,
-          plus_one: plusOneText,
-          event_id: evt.name
-        })
-      }).catch(err => console.error('Webhook Error:', err));
+      console.log('Checking registration for:', email);
+      
+      // 1. Primary Attendee Check & Add
+      try {
+        const primaryRes = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          redirect: 'follow',
+          body: JSON.stringify({
+            name: attendeeName,
+            email: email,
+            phone: phone || '',
+            company: companyText,
+            plus_one: plusone ? 'Yes (+1)' : 'No',
+            event_id: evt.name
+          })
+        });
+
+        const statusText = await primaryRes.text();
+        if (statusText.includes('Duplicate')) {
+          return new Response(JSON.stringify({ 
+            error: 'You already confirmed your attendance for this event.' 
+          }), { 
+            status: 409, 
+            headers: { 'Content-Type': 'application/json' } 
+          });
+        }
+      } catch (err) {
+        console.error('Primary Webhook Error:', err);
+        // Continue even if webhook fails (better to have email than nothing)
+      }
+
+      // 2. Guest Row (if applicable) — fired as background task
+      if (plusone) {
+        const guestName = `${guest_fname || ''} ${guest_lname || ''}`.trim() || 'Guest';
+        context.waitUntil(fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          redirect: 'follow',
+          body: JSON.stringify({
+            name: guestName,
+            email: guest_email || 'N/A',
+            phone: 'N/A',
+            company: guest_company || 'N/A',
+            plus_one: `Guest of ${attendeeName}`,
+            event_id: evt.name
+          })
+        }).catch(err => console.error('Guest Webhook Error:', err)));
+      }
+    } else {
+      console.warn('WEBHOOK_URL environment variable is NOT set. Skipping webhook.');
     }
 
     // ── 5. ICS calendar attachment ───────────────────────────────────────────
@@ -211,11 +249,10 @@ export async function onRequestPost(context) {
       ].join('\n'),
     };
 
-    // ── 7. Send Resend emails concurrently with Webhook ──────────────────────
+    // ── 7. Send Resend emails concurrently ───────────────────────────────────
     const [attendeeRes, adminRes] = await Promise.all([
       fetch(RESEND_URL, { method: 'POST', headers, body: JSON.stringify(attendeePayload) }),
-      fetch(RESEND_URL, { method: 'POST', headers, body: JSON.stringify(adminPayload) }),
-      webhookPromise // Don't wait for response, just run it concurrently
+      fetch(RESEND_URL, { method: 'POST', headers, body: JSON.stringify(adminPayload) })
     ]);
 
     if (!attendeeRes.ok || !adminRes.ok) {
