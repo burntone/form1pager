@@ -13,7 +13,7 @@ export async function onRequestPost(context) {
     const body = await context.request.json();
     const { 
       fname, lname, email, company, phone, plusone,
-      guest_fname, guest_lname, guest_email, guest_company,
+      guest_fname, guest_lname, guest_email, guest_company, guest_phone,
       eventId 
     } = body;
 
@@ -28,6 +28,7 @@ export async function onRequestPost(context) {
     if (plusone) {
       plusOneText += `\nGuest: ${guest_fname || ''} ${guest_lname || ''}`
                   + `\nGuest Email: ${guest_email || 'N/A'}`
+                  + `\nGuest Phone: ${guest_phone || 'N/A'}`
                   + `\nGuest Company: ${guest_company || 'N/A'}`;
     }
 
@@ -105,7 +106,7 @@ export async function onRequestPost(context) {
           body: JSON.stringify({
             name: guestName,
             email: guest_email || 'N/A',
-            phone: 'N/A',
+            phone: guest_phone || 'N/A',
             company: guest_company || 'N/A',
             plus_one: `Guest of ${attendeeName}`,
             event_id: evt.name
