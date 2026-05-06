@@ -69,11 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
         successMessage.classList.add('visible');
         form.reset();
         plusOneFields.classList.add('hidden');
-        form.style.display = 'none'; // hide form after success
       } else {
         const err = await response.json();
         if (response.status === 409) {
-          alert(err.error);
+          // Change success message content for duplicates
+          successMessage.querySelector('h2').textContent = 'Already Confirmed';
+          successMessage.querySelector('p').textContent = err.error;
+          successMessage.classList.add('visible');
+          form.style.display = 'none';
         } else {
           alert('Error: ' + (err.error || 'Failed to submit RSVP. Please try again.'));
         }
@@ -95,7 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
     backBtn.addEventListener('click', () => {
       successMessage.classList.remove('visible');
       form.style.display = 'flex';
-      // Form was already reset during success
+      
+      // Reset success message to default for next potential use
+      successMessage.querySelector('h2').textContent = 'Confirmed';
+      successMessage.querySelector('p').textContent = 'Your RSVP has been received. You will receive a calendar invitation shortly.';
     });
   }
 
