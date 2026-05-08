@@ -96,22 +96,26 @@ export async function onRequestPost(context) {
         // Continue even if webhook fails (better to have email than nothing)
       }
 
-      // 2. Guest Row (if applicable) — fired as background task
+      // 2. Guest Row (if applicable) — Sequential for reliability
       if (plusone) {
         const guestName = `${guest_fname || ''} ${guest_lname || ''}`.trim() || 'Guest';
-        context.waitUntil(fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          redirect: 'follow',
-          body: JSON.stringify({
-            name: guestName,
-            email: guest_email || 'N/A',
-            phone: guest_phone || 'N/A',
-            company: guest_company || 'N/A',
-            plus_one: `Guest of ${attendeeName}`,
-            event_id: evt.name
-          })
-        }).catch(err => console.error('Guest Webhook Error:', err)));
+        try {
+          await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            redirect: 'follow',
+            body: JSON.stringify({
+              name: guestName,
+              email: guest_email || 'N/A',
+              phone: guest_phone || 'N/A',
+              company: guest_company || 'N/A',
+              plus_one: `Guest of ${attendeeName}`,
+              event_id: evt.name
+            })
+          });
+        } catch (err) {
+          console.error('Guest Webhook Error:', err);
+        }
       }
     } else {
       console.warn('WEBHOOK_URL environment variable is NOT set. Skipping webhook.');

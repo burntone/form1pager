@@ -67,8 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         successMessage.classList.add('visible');
+        form.style.display = 'none';
         form.reset();
-        plusOneFields.classList.add('hidden');
+        if (plusOneFields) plusOneFields.classList.add('hidden');
       } else {
         const err = await response.json();
         if (response.status === 409) {
@@ -86,9 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Submission error:', error);
     } finally {
       submitBtn.disabled = false;
-      if (!successMessage.classList.contains('visible')) {
-        submitBtn.textContent = 'ACCEPT INVITATION';
-      }
+      submitBtn.textContent = 'ACCEPT INVITATION';
     }
   });
 
