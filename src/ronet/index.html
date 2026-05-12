@@ -26,93 +26,114 @@
     .header h1 {
       font-family: 'Bodoni Moda', serif;
       font-style: italic;
-      font-weight: 500;
-      font-size: 5.5rem;
+      font-weight: 600;
+      font-size: clamp(3rem, 8vw, 5.5rem);
       color: #ffffff;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      letter-spacing: -0.02em;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+      letter-spacing: -0.01em;
       margin-bottom: 0.5rem;
     }
     
     .subtitle {
       font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: clamp(1rem, 3vw, 1.4rem);
       text-transform: uppercase;
-      letter-spacing: 0.4em;
-      color: #F1E5AC;
-      text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      letter-spacing: 0.35em;
+      color: #E2B47F; /* More legible gold */
+      text-shadow: 0 4px 15px rgba(0,0,0,0.9);
       margin-top: -10px;
       margin-bottom: 2.5rem;
     }
     
     .small-caps-subtitle {
-      background: rgba(10, 10, 10, 0.15); /* Ultra-translucent dark glass */
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(226, 180, 127, 0.2); /* Subtle gold border */
+      background: rgba(0, 0, 0, 0.45); /* Darker glass for readability */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 180, 127, 0.3);
       border-radius: 20px;
       padding: 30px;
       color: #f5f5f5;
-      text-shadow: none;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
     
     .small-caps-subtitle h2 {
-      color: #F1E5AC;
+      color: #E2B47F;
       font-family: 'Inter', sans-serif;
       font-weight: 600;
       letter-spacing: 0.1em;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .small-caps-subtitle h3 {
-      color: #e0e0e0;
+      color: #ffffff;
+      opacity: 0.95;
       font-family: var(--font-sans);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 400;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
     }
 
     .form-container {
-      background: rgba(10, 10, 10, 0.15); /* Ultra-translucent dark glass */
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(226, 180, 127, 0.2);
-      border-radius: 30px;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-      padding: 3.5rem;
+      background: rgba(0, 0, 0, 0.45); /* Darker glass for readability */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 180, 127, 0.25);
+      border-radius: 24px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+      padding: clamp(2rem, 5vw, 3.5rem);
     }
     
     .form-container input[type="text"],
     .form-container input[type="email"],
     .form-container input[type="tel"] {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255,255,255,0.1);
-      border-bottom: 1px solid rgba(226, 180, 127, 0.3);
+      border-bottom: 2px solid rgba(226, 180, 127, 0.4);
       color: #ffffff;
       border-radius: 8px;
-      padding: 16px 20px;
-      text-align: left; /* Better readability for forms */
+      padding: 16px 18px;
+      text-align: left;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
     }
-    
+
     .form-container input::placeholder {
-      color: #ffffff;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* Prevent truncation in shared rows */
+    .form-row .input-group input {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+      text-align: left !important;
+    }
+    .form-row .input-group input::placeholder {
+      font-size: 0.62rem !important;
+      letter-spacing: 0 !important;
+      text-align: left !important;
     }
     
     .form-container input:focus {
-      background: rgba(0, 0, 0, 0.6);
-      border-color: var(--accent-gold);
+      background: rgba(0, 0, 0, 0.7);
+      border-color: #F1E5AC;
+      box-shadow: 0 0 15px rgba(226, 180, 127, 0.1);
+      outline: none;
     }
 
     .switch-label {
       color: #ffffff;
-      opacity: 0.9;
+      opacity: 1;
+      font-weight: 500;
     }
     
     #submitBtn {
-      background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 50%, var(--accent-gold-dark) 100%);
+      background: linear-gradient(135deg, #F1E5AC 0%, #E2B47F 50%, #C49A6C 100%);
       color: #000000;
       border: none;
       border-radius: 12px;
@@ -120,15 +141,17 @@
       font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      padding: 20px;
-      margin-top: 15px;
-      box-shadow: 0 10px 25px rgba(226, 180, 127, 0.2);
+      padding: 22px;
+      margin-top: 20px;
+      box-shadow: 0 10px 30px rgba(226, 180, 127, 0.3);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     #submitBtn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(226, 180, 127, 0.3);
-      filter: brightness(1.1);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(226, 180, 127, 0.4);
+      filter: brightness(1.15);
     }
   </style>
 </head>
@@ -205,10 +228,10 @@
           <div class="fields-wrapper">
             <div class="form-row">
               <div class="input-group">
-                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST NAME">
+                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST">
               </div>
               <div class="input-group">
-                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST NAME">
+                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST">
               </div>
             </div>
             <div class="input-group full-width">
