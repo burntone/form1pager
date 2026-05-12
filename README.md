@@ -1,8 +1,23 @@
-# Cigars & Networking RSVP System
+# Zonaro Events Platform
 
-A premium, minimalist landing page and RSVP system built on Cloudflare Pages. 
+A premium, minimalist event hub and RSVP system built on Cloudflare Pages. 
 
-This project uses standard HTML/CSS/JS for the frontend and Cloudflare Pages Functions (`functions/api/rsvp.js`) for the backend email delivery via Resend.
+This project uses standard HTML/CSS/JS for the frontend and Cloudflare Pages Functions (`functions/api/rsvp.js`) for the backend email delivery via Resend and Google Sheets webhook integration.
+
+## Project Structure
+
+- `src/index.html`: Main Zonaro Events Hub.
+- `src/cigars/`: Cigars & Networking event page.
+- `src/ronet/`: Romanian Network event page.
+- `src/script.js`: Global WebGL background animations and form logic.
+- `functions/api/rsvp.js`: Serverless backend for handling RSVP submissions.
+
+## Deployment
+
+This site uses **Cloudflare Pages native GitHub integration**. 
+1. Push any changes to the `main` branch.
+2. Cloudflare automatically detects the push and deploys the `src` directory.
+3. No manual GitHub Actions (`.github/workflows`) are needed.
 
 ---
 
