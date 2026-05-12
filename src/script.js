@@ -353,8 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
             vec3 blue   = vec3(0.0, 0.168, 0.498);
             vec3 yellow = vec3(0.988, 0.820, 0.086);
             vec3 red    = vec3(0.808, 0.067, 0.149);
-            finalColor = mix(blue, yellow, smoothstep(0.1, 0.5, vUv.y));
-            finalColor = mix(finalColor, red, smoothstep(0.5, 0.9, vUv.y));
+            finalColor = mix(blue, yellow, smoothstep(0.3, 0.5, vUv.y));
+            finalColor = mix(finalColor, red, smoothstep(0.5, 0.7, vUv.y));
           } else {
             finalColor = vec3(0.72, 0.80, 0.92);
           }
@@ -404,11 +404,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (isRonet) {
-      createWisp(3.5, 18.0,  2.0,  0.0,  0.5, 0.35,  3.0, 0.06, 0.0, 1.0, 0.0, 0.0, 1.5);
-      createWisp(3.0, 15.0,  4.5, 10.0,  0.6, 0.25,  4.0, 0.10, 0.0, 1.0, 1.0, 0.0, 1.8);
-      createWisp(2.8, 16.0, -0.5, 25.0,  0.4, 0.30,  2.5, 0.08, 0.0, 1.0, 2.0, 0.0, 1.2);
-      createWisp(4.5, 14.0,  2.5, 40.0,  0.35, 0.22,  2.0, 0.05, 4.5, 2.2, 3.0, 0.0, 2.0);
-      createWisp(2.5, 15.0,  5.5, 55.0, 0.42, 0.28,  3.5, 0.14, 0.0, 1.8, 4.0, 1.0, 1.4);
+      createWisp(3.5, 18.0,  2.0,  0.0,  0.5, 0.45,  3.0, 0.06, 0.0, 1.0, 0.0, 0.0, 1.5);
+      createWisp(3.0, 15.0,  4.5, 10.0,  0.6, 0.35,  4.0, 0.10, 0.0, 1.0, 1.0, 0.0, 1.8);
+      createWisp(2.8, 16.0, -0.5, 25.0,  0.4, 0.40,  2.5, 0.08, 0.0, 1.0, 2.0, 0.0, 1.2);
+      createWisp(4.5, 14.0,  2.5, 40.0,  0.35, 0.32,  2.0, 0.05, 4.5, 2.2, 3.0, 0.0, 2.0);
+      createWisp(2.5, 15.0,  5.5, 55.0, 0.42, 0.38,  3.5, 0.14, 0.0, 1.8, 4.0, 1.0, 1.4);
     } else {
       createWisp(1.2, 12.0,  0.0,  0.0,  1.0, 0.18,  3.0, 0.06, 0.0, 1.0, 0.0, 0.0, 1.5);
       createWisp(1.8, 10.0, -0.1, 10.0,  1.2, 0.10,  4.0, 0.10, 0.0, 1.0, 1.0, 0.0, 1.8);
