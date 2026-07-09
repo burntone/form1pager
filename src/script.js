@@ -34,62 +34,130 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleFields(plusOneToggle.checked);
   }
 
+  // Detect eventId from path
+  const path = window.location.pathname;
+  const eventId = path.includes('/ronet') ? 'ronet' : 'cigars';
+
+  // Helper to configure calendar buttons on the success screen
+  function setupCalendarLinks(id) {
+    const googleCalBtn = document.getElementById('googleCalBtn');
+    const icsCalBtn = document.getElementById('icsCalBtn');
+    if (!googleCalBtn || !icsCalBtn) return;
+
+    const eventDetails = {
+      cigars: {
+        title: 'Cigars & Networking',
+        start: '20260801T230000Z',
+        end: '20260802T020000Z',
+        location: '980 N Deerpath Rd, North Aurora, IL 60542',
+        details: 'Join us for Cigars & Networking. Host: Alex Radu.'
+      },
+      ronet: {
+        title: 'Romanian Networking Event',
+        start: '20260801T210000Z',
+        end: '20260802T000000Z',
+        location: '980 N Deerpath Rd, North Aurora, IL 60542',
+        details: 'Join us for Romanian Networking Event. Host: Alex Radu.'
+      }
+    };
+
+    const evt = eventDetails[id] || eventDetails.cigars;
+
+    // Google Calendar Link
+    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(evt.title)}&dates=${evt.start}/${evt.end}&details=${encodeURIComponent(evt.details)}&location=${encodeURIComponent(evt.location)}`;
+    googleCalBtn.href = googleUrl;
+
+    // ICS Download Handler
+    icsCalBtn.onclick = (e) => {
+      e.preventDefault();
+      const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Zonaro Events//EN',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        `UID:${id}-2026@zonaro.org`,
+        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+        `DTSTART:${evt.start}`,
+        `DTEND:${evt.end}`,
+        `SUMMARY:${evt.title}`,
+        `DESCRIPTION:${evt.details}`,
+        `LOCATION:${evt.location.replace(/,/g, '\\,')}`,
+        'STATUS:CONFIRMED',
+        'END:VEVENT',
+        'END:VCALENDAR',
+      ].join('\r\n');
+
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${id}-invite.ics`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  }
+
+  // Check if already submitted
+  if (localStorage.getItem(`rsvp_submitted_${eventId}`) === 'true') {
+    successMessage.querySelector('h2').textContent = 'Already Confirmed';
+    successMessage.querySelector('p').innerHTML = 'You have already confirmed your attendance for this event.<br><br>The exact address for the location will be provided to you by the host.';
+    successMessage.classList.add('visible');
+    if (form) form.style.display = 'none';
+    setupCalendarLinks(eventId);
+  }
+
   // Form Submission
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
     
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'SUBMITTING...';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'SUBMITTING...';
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-    data.plusone = formData.has('plusone');
-    
-    // Detect eventId from path
-    const path = window.location.pathname;
-    if (path.includes('/ronet')) {
-      data.eventId = 'ronet';
-    } else if (path.includes('/cigars')) {
-      data.eventId = 'cigars';
-    } else {
-      data.eventId = 'cigars'; // default
-    }
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      data.plusone = formData.has('plusone');
+      data.eventId = eventId;
 
-    try {
-      const response = await fetch('/api/rsvp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
+      try {
+        const response = await fetch('/api/rsvp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
 
-      if (response.ok) {
-        successMessage.classList.add('visible');
-        form.style.display = 'none';
-        form.reset();
-        if (plusOneFields) plusOneFields.classList.add('hidden');
-      } else {
-        const err = await response.json();
-        if (response.status === 409) {
-          // Change success message content for duplicates
-          successMessage.querySelector('h2').textContent = 'Already Confirmed';
-          successMessage.querySelector('p').textContent = err.error;
+        if (response.ok) {
           successMessage.classList.add('visible');
           form.style.display = 'none';
+          form.reset();
+          if (plusOneFields) plusOneFields.classList.add('hidden');
+          
+          localStorage.setItem(`rsvp_submitted_${eventId}`, 'true');
+          setupCalendarLinks(eventId);
         } else {
-          alert('Error: ' + (err.error || 'Failed to submit RSVP. Please try again.'));
+          const err = await response.json();
+          if (response.status === 409) {
+            successMessage.querySelector('h2').textContent = 'Already Confirmed';
+            successMessage.querySelector('p').innerHTML = err.error;
+            successMessage.classList.add('visible');
+            form.style.display = 'none';
+            setupCalendarLinks(eventId);
+          } else {
+            alert('Error: ' + (err.error || 'Failed to submit RSVP. Please try again.'));
+          }
         }
+      } catch (error) {
+        alert('An error occurred. Please try again later.');
+        console.error('Submission error:', error);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ACCEPT INVITATION';
       }
-    } catch (error) {
-      alert('An error occurred. Please try again later.');
-      console.error('Submission error:', error);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'ACCEPT INVITATION';
-    }
-  });
+    });
+  }
 
   // Back & Share Logic
   const backBtn = document.getElementById('backBtn');
@@ -100,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Reset success message to default for next potential use
       successMessage.querySelector('h2').textContent = 'Confirmed';
-      successMessage.querySelector('p').textContent = 'Your RSVP has been received. You will receive a calendar invitation shortly.';
+      successMessage.querySelector('p').innerHTML = 'Your RSVP has been received. You will receive a calendar invitation shortly.<br><br>The exact address for the location will be provided to you by the host.';
     });
   }
 

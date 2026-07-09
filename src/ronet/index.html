@@ -244,6 +244,18 @@
       <div id="successMessage" class="success-message">
         <h2>Confirmed</h2>
         <p>Your RSVP has been received. You will receive a calendar invitation shortly.<br><br>The exact address for the location will be provided to you by the host.</p>
+        
+        <div class="calendar-actions">
+          <a href="#" id="googleCalBtn" target="_blank" class="cal-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            ADD TO GOOGLE CALENDAR
+          </a>
+          <button type="button" id="icsCalBtn" class="cal-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            DOWNLOAD CALENDAR INVITE (.ICS)
+          </button>
+        </div>
+
         <div class="success-actions">
           <button type="button" id="backBtn" class="action-btn icon-only-btn" title="Back">
             <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 18 4 12 10 6"></polyline></svg>
@@ -290,20 +302,20 @@
           <div class="fields-wrapper">
             <div class="form-row">
               <div class="input-group">
-                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST">
+                <input type="text" id="guest_fname" name="guest_fname" placeholder="GUEST FIRST NAME" autocomplete="given-name">
               </div>
               <div class="input-group">
-                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST">
+                <input type="text" id="guest_lname" name="guest_lname" placeholder="GUEST LAST NAME" autocomplete="family-name">
               </div>
             </div>
             <div class="input-group full-width">
-              <input type="email" id="guest_email" name="guest_email" placeholder="GUEST EMAIL">
+              <input type="email" id="guest_email" name="guest_email" placeholder="GUEST EMAIL" autocomplete="email">
             </div>
             <div class="input-group full-width">
-              <input type="tel" id="guest_phone" name="guest_phone" placeholder="GUEST PHONE NUMBER">
+              <input type="tel" id="guest_phone" name="guest_phone" placeholder="GUEST PHONE NUMBER" autocomplete="tel">
             </div>
             <div class="input-group full-width">
-              <input type="text" id="guest_company" name="guest_company" placeholder="GUEST COMPANY">
+              <input type="text" id="guest_company" name="guest_company" placeholder="GUEST COMPANY" autocomplete="organization">
             </div>
           </div>
         </div>

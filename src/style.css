@@ -673,7 +673,8 @@ button:disabled {
 }
 
 .sponsor-logo-wrapper img:hover {
-  transform: scale(1.06);
+  transform: translateY(-4px) scale(1.06);
+  filter: drop-shadow(0px 4px 12px rgba(226, 180, 127, 0.45)) drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.95));
 }
 
 /* Responsive: resolve to 2 per row when in vertical/mobile layouts */
@@ -686,4 +687,48 @@ button:disabled {
   .sponsor-logo-wrapper img {
     height: 55px;
   }
+}
+
+/* Success Calendar Actions */
+.calendar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.cal-btn {
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(226, 180, 127, 0.4);
+  color: var(--accent-gold-light);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cal-btn:hover {
+  background: rgba(226, 180, 127, 0.15);
+  border-color: var(--accent-gold);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(226, 180, 127, 0.3);
+}
+
+.cal-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.cal-btn:hover svg {
+  transform: scale(1.15);
 }
