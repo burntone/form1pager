@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Romanian Network | Saturday, June 6, 2026 | v0.6</title>
+  <title>Romanian Networking Event | Saturday, August 1, 2026 | v0.6</title>
 
   <!-- SEO -->
-  <meta name="description" content="Join us for the Romanian Network event on Saturday, June 6th, 2026 in North Aurora, IL.">
-  <meta property="og:title" content="Romanian Network">
-  <meta property="og:description" content="Saturday, June 6th, 2026 — North Aurora, IL.">
+  <meta name="description" content="Join us for the Romanian Networking Event on Saturday, August 1st, 2026 in North Aurora, IL.">
+  <meta property="og:title" content="Romanian Networking Event">
+  <meta property="og:description" content="Saturday, August 1st, 2026 — North Aurora, IL.">
   <meta property="og:type" content="website">
 
   <!-- Preload hero image so it paints immediately -->
@@ -18,7 +18,7 @@
   <link rel="preload" href="../fonts/playfair-display-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../fonts/pinyon-script-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.css?v=1.1">
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     /* Redesign: Premium Dark Frosted Glass */
@@ -159,6 +159,43 @@
       box-shadow: 0 20px 40px rgba(226, 180, 127, 0.4);
       filter: brightness(1.15);
     }
+
+    /* Override sponsors container for dark glassmorphism to contrast with light page background */
+    .sponsors-container {
+      background-color: rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 180, 127, 0.25);
+      padding: 0.8rem 1.2rem;
+    }
+
+    .sponsors-title {
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Custom doubled sponsor logo sizes for ronet page */
+    .sponsor-logo-wrapper {
+      flex: 0 0 auto;
+      height: 140px;
+      width: auto;
+      padding: 0;
+    }
+
+    .sponsor-logo-wrapper img {
+      height: 120px;
+      width: auto;
+    }
+
+    @media (max-width: 900px) {
+      .sponsor-logo-wrapper {
+        flex: 0 0 auto;
+        height: 120px;
+      }
+      .sponsor-logo-wrapper img {
+        height: 100px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -171,11 +208,11 @@
   <div class="page-wrapper">
     
     <header class="header">
-      <h1>Romanian Network</h1>
+      <h1>Romanian Networking <span style="font-size: 0.65em; font-weight: 300; font-style: italic; opacity: 0.9; display: block; margin-top: 0.25rem;">Event</span></h1>
       <div class="separator"></div>
       <div class="subtitle">Connecting Professionals</div>
       <div class="small-caps-subtitle glass-overlay">
-        <h2>Saturday, June 6, 2026</h2><br>
+        <h2>Saturday, August 1, 2026</h2><br>
         <h3 style="display:inline-block; margin-top: 8px;">Host: Alex Radu</h3><br>
         <h3 style="display:inline-block; margin-top: 8px;">Time: 4:00 PM</h3><br>
         <h3 style="display:inline-block; margin-top: 8px;">Address: 980 N Deerpath Rd, North Aurora, IL 60542</h3><br>
@@ -183,7 +220,26 @@
       </div>
     </header>
 
-    <div class="form-container">  
+    <div class="right-column">
+      <div class="sponsors-container">
+        <div class="sponsors-title">EVENT SPONSORS</div>
+        <div class="sponsors-logos">
+          <div class="sponsor-logo-wrapper">
+            <img src="../assets/logos/romotana.png" alt="Romotana">
+          </div>
+          <div class="sponsor-logo-wrapper">
+            <img src="../assets/logos/romanian_community.png" alt="Romanian Community Center">
+          </div>
+          <div class="sponsor-logo-wrapper">
+            <img src="../assets/logos/gigisgrill.png" alt="Gigi's Grill">
+          </div>
+          <div class="sponsor-logo-wrapper">
+            <img src="../assets/logos/globallife.png" alt="Global Life">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-container">  
       
       <div id="successMessage" class="success-message">
         <h2>Confirmed</h2>
@@ -259,6 +315,7 @@
 
     </div>
   </div>
+</div>
 
   <footer class="footer">&copy; burntone 2026 &nbsp;|&nbsp; v0.6</footer>
 

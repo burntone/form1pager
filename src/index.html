@@ -250,6 +250,36 @@
       color: #fff;
     }
 
+    body.theme-premium .event-card.past {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(0, 0, 0, 0.05);
+      box-shadow: none;
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    body.theme-premium .event-card.past:hover {
+      transform: none;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    body.theme-premium .event-card.past .date {
+      color: #555;
+    }
+
+    body.theme-premium .event-card.past .btn-outline {
+      border-color: #888;
+      color: #888;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    body.theme-premium .event-card.past .btn-outline:hover {
+      background: transparent;
+      color: #888;
+    }
+
     body.theme-premium .footer {
       color: #777;
       border-top-color: rgba(0,0,0,0.05);
@@ -298,22 +328,34 @@
       </div>
     </div>
 
-    <div class="event-grid">
-      <!-- Event 1: Cigars & Networking -->
-      <a href="/cigars" class="event-card">
+    <h2 style="font-family: var(--font-title); font-size: 2.2rem; margin-top: 60px; margin-bottom: 20px; text-align: center; color: var(--accent-gold-light);">Upcoming Events</h2>
+    <div class="event-grid" style="margin-top: 10px; justify-content: center; display: flex;">
+      <!-- Upcoming Event: Romanian Networking Event -->
+      <a href="/ronet" class="event-card" style="max-width: 500px; width: 100%;">
+        <div class="date">Saturday, August 1, 2026</div>
+        <h3>Romanian Networking Event</h3>
+        <p>Connecting Romanian professionals and business leaders in an elegant setting. Building community and empowering business.</p>
+        <span class="btn-outline">RSVP NOW</span>
+      </a>
+    </div>
+
+    <h2 style="font-family: var(--font-title); font-size: 1.8rem; margin-top: 60px; margin-bottom: 20px; text-align: center; color: rgba(255,255,255,0.4);">Past Events</h2>
+    <div class="event-grid" style="margin-top: 10px; opacity: 0.85;">
+      <!-- Archived Event 1: Cigars & Networking -->
+      <div class="event-card past">
         <div class="date">May 15, 2026</div>
         <h3>Cigars &amp; Networking</h3>
         <p>A Gathering of Minds, A Celebration of Taste. Join us for premium cigars and high-level networking.</p>
-        <span class="btn-outline">RSVP NOW</span>
-      </a>
+        <span class="btn-outline">PAST EVENT</span>
+      </div>
 
-      <!-- Event 3: Romanian Network -->
-      <a href="/ronet" class="event-card">
+      <!-- Archived Event 2: Romanian Network -->
+      <div class="event-card past">
         <div class="date">June 6, 2026</div>
         <h3>Romanian Network</h3>
         <p>Connecting Romanian professionals and business leaders in an elegant daytime setting.</p>
-        <span class="btn-outline">RSVP NOW</span>
-      </a>
+        <span class="btn-outline">PAST EVENT</span>
+      </div>
     </div>
 
   </div>
