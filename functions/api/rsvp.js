@@ -37,23 +37,23 @@ export async function onRequestPost(context) {
       cigars: {
         id: 'cigars-networking',
         name: 'Cigars & Networking',
-        dateStr: 'Friday, May 15, 2026',
+        dateStr: 'Saturday, August 1st, 2026',
         timeStr: '6:00 PM',
         locationHtml: '980 N Deerpath Rd<br><span style="color:#999;font-size:13px;line-height:1.6;">North Aurora, IL 60542</span>',
         locationICS: '980 N Deerpath Rd\\, North Aurora\\, IL 60542',
-        startICS: '20260515T230000Z',
-        endICS: '20260516T020000Z',
+        startICS: '20260801T230000Z',
+        endICS: '20260802T020000Z',
         color: '#d4af37'
       },
       ronet: {
         id: 'romanian-network',
-        name: 'Romanian Network',
-        dateStr: 'Saturday, June 6, 2026',
+        name: 'Romanian Networking Event',
+        dateStr: 'Saturday, August 1st, 2026',
         timeStr: '4:00 PM',
         locationHtml: '980 N Deerpath Rd<br><span style="color:#999;font-size:13px;line-height:1.6;">North Aurora, IL 60542</span>',
         locationICS: '980 N Deerpath Rd\\, North Aurora\\, IL 60542',
-        startICS: '20260606T210000Z',
-        endICS: '20260607T000000Z',
+        startICS: '20260801T210000Z',
+        endICS: '20260802T000000Z',
         color: '#c28847'
       }
     };
@@ -198,7 +198,7 @@ export async function onRequestPost(context) {
                             <span style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:${evt.color};">When</span>
                           </td>
                           <td style="padding-bottom:12px;">
-                            <p style="margin:0;font-size:15px;color:#f5f5f5;letter-spacing:0.02em;">${evt.dateStr}<br><span style="color:#999;font-size:13px;line-height:1.6;">${evt.timeStr}</span></p>
+                            <p style="margin:0;font-size:15px;color:#f5f5f5;letter-spacing:0.02em;">${evt.dateStr} @ ${evt.timeStr}</p>
                           </td>
                         </tr>
                         <tr>
