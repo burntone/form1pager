@@ -47,7 +47,7 @@ export async function onRequestPost(context) {
       },
       ronet: {
         id: 'romanian-network',
-        name: 'Romanian Business Event',
+        name: 'Romanian Business Networking Event',
         dateStr: 'Saturday, August 1, 2026',
         timeStr: '4:00 PM',
         locationHtml: '980 N Deerpath Rd<br><span style="color:#999;font-size:13px;line-height:1.6;">North Aurora, IL 60542</span>',
