@@ -53,11 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         details: 'Join us for Cigars & Networking. Host: Alex Radu.'
       },
       ronet: {
-        title: 'Romanian Networking Event',
+        title: 'Romanian Business Event',
         start: '20260801T210000Z',
         end: '20260802T000000Z',
         location: '980 N Deerpath Rd, North Aurora, IL 60542',
-        details: 'Join us for Romanian Networking Event. Host: Alex Radu.'
+        details: 'Join us for Romanian Business Event. Host: Alex Radu.'
       }
     };
 

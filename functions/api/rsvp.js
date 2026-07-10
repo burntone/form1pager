@@ -47,8 +47,8 @@ export async function onRequestPost(context) {
       },
       ronet: {
         id: 'romanian-network',
-        name: 'Romanian Networking Event',
-        dateStr: 'Saturday, August 1st, 2026',
+        name: 'Romanian Business Event',
+        dateStr: 'Saturday, August 1, 2026',
         timeStr: '4:00 PM',
         locationHtml: '980 N Deerpath Rd<br><span style="color:#999;font-size:13px;line-height:1.6;">North Aurora, IL 60542</span>',
         locationICS: '980 N Deerpath Rd\\, North Aurora\\, IL 60542',
@@ -181,9 +181,9 @@ export async function onRequestPost(context) {
                     Dear ${fname},
                   </p>
                   <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#ccc;">
-                    Your reservation is confirmed. We look forward to welcoming you to
-                    <strong style="color:#f5f5f5;">${evt.name}</strong> on
-                    <strong style="color:#f5f5f5;">${evt.dateStr}</strong>.
+                    ${evt.id === 'romanian-network'
+                      ? `Your reservation has been confirmed. We look forward to welcoming you to the <strong style="color:#f5f5f5;">${evt.name}</strong> on <strong style="color:#f5f5f5;">${evt.dateStr}</strong>.`
+                      : `Your reservation is confirmed. We look forward to welcoming you to <strong style="color:#f5f5f5;">${evt.name}</strong> on <strong style="color:#f5f5f5;">${evt.dateStr}</strong>.`}
                   </p>
                   <!-- Event details box -->
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
@@ -222,7 +222,10 @@ export async function onRequestPost(context) {
                 </td></tr>
                 <!-- Footer -->
                 <tr><td style="padding:20px 48px;border-top:1px solid #2a2a2a;text-align:center;">
-                  <p style="margin:0;font-size:12px;color:#444;">
+                  <p style="margin:0 0 10px;font-size:12px;color:#666;">
+                    Visit <a href="https://zonaro.org" style="color:${evt.color};text-decoration:none;font-weight:600;">zonaro.org</a> for more details.
+                  </p>
+                  <p style="margin:0;font-size:11px;color:#444;">
                     Questions? Reply to this email or contact events@zonaro.org
                   </p>
                 </td></tr>
