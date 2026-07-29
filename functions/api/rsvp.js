@@ -17,19 +17,35 @@ export async function onRequestPost(context) {
       eventId 
     } = body;
 
-    if (!fname || !lname || !email) {
+    function sanitizeField(val) {
+      if (!val) return '';
+      const str = String(val).trim();
+      if (str.startsWith('http://') || str.startsWith('https://') || str.includes('eventId=')) {
+        return '';
+      }
+      return str;
+    }
+
+    const cleanFname = sanitizeField(fname);
+    const cleanLname = sanitizeField(lname);
+    const cleanCompany = sanitizeField(company);
+    const cleanGuestFname = sanitizeField(guest_fname);
+    const cleanGuestLname = sanitizeField(guest_lname);
+    const cleanGuestCompany = sanitizeField(guest_company);
+
+    if (!cleanFname || !cleanLname || !email) {
       return new Response(JSON.stringify({ error: 'Missing required fields.' }), { status: 400 });
     }
 
-    const attendeeName = `${fname} ${lname}`;
-    const companyText  = company || 'N/A';
+    const attendeeName = `${cleanFname} ${cleanLname}`;
+    const companyText  = cleanCompany || 'N/A';
 
     let plusOneText = plusone ? 'Yes' : 'No';
     if (plusone) {
-      plusOneText += `\nGuest: ${guest_fname || ''} ${guest_lname || ''}`
+      plusOneText += `\nGuest: ${cleanGuestFname} ${cleanGuestLname}`.trim()
                   + `\nGuest Email: ${guest_email || 'N/A'}`
                   + `\nGuest Phone: ${guest_phone || 'N/A'}`
-                  + `\nGuest Company: ${guest_company || 'N/A'}`;
+                  + `\nGuest Company: ${cleanGuestCompany || 'N/A'}`;
     }
 
     // ── 3. Event Configuration ───────────────────────────────────────────────
@@ -98,7 +114,7 @@ export async function onRequestPost(context) {
 
       // 2. Guest Row (if applicable) — Sequential for reliability
       if (plusone) {
-        const guestName = `${guest_fname || ''} ${guest_lname || ''}`.trim() || 'Guest';
+        const guestName = `${cleanGuestFname} ${cleanGuestLname}`.trim() || 'Guest';
         try {
           await fetch(WEBHOOK_URL, {
             method: 'POST',
@@ -108,7 +124,7 @@ export async function onRequestPost(context) {
               name: guestName,
               email: guest_email || 'N/A',
               phone: guest_phone || 'N/A',
-              company: guest_company || 'N/A',
+              company: cleanGuestCompany || 'N/A',
               plus_one: `Guest of ${attendeeName}`,
               event_id: evt.name
             })

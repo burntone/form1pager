@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const guestEmail = document.getElementById('guest_email');
   const guestCompany = document.getElementById('guest_company');
 
+  let toggleFields = null;
   if (plusOneToggle && plusOneFields) {
-    const toggleFields = (show) => {
+    toggleFields = (show) => {
       if (show) {
         plusOneFields.classList.remove('hidden');
         if (guestFname) guestFname.required = true;
@@ -32,6 +33,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle initial state
     toggleFields(plusOneToggle.checked);
+  }
+
+  // Pre-fill form fields from URL query parameters & sanitize values
+  function sanitizeParam(val) {
+    if (!val) return '';
+    const trimmed = val.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.includes('eventId=') || trimmed.includes('fname=')) {
+      return '';
+    }
+    return trimmed;
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.toString() && form) {
+    const fieldsToFill = ['fname', 'lname', 'phone', 'email', 'company', 'guest_fname', 'guest_lname', 'guest_email', 'guest_phone', 'guest_company'];
+    let hasGuestData = false;
+
+    fieldsToFill.forEach(paramName => {
+      const rawVal = urlParams.get(paramName);
+      const cleanVal = sanitizeParam(rawVal);
+      if (cleanVal) {
+        const inputElem = document.getElementById(paramName);
+        if (inputElem) {
+          inputElem.value = cleanVal;
+          if (paramName.startsWith('guest_')) {
+            hasGuestData = true;
+          }
+        }
+      }
+    });
+
+    const plusoneParam = urlParams.get('plusone');
+    if (plusoneParam === 'true' || plusoneParam === '1' || plusoneParam === 'yes' || hasGuestData) {
+      if (plusOneToggle) {
+        plusOneToggle.checked = true;
+        if (toggleFields) toggleFields(true);
+      }
+    }
   }
 
   // Detect eventId from path
@@ -173,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const shareBtn = document.getElementById('shareBtn');
-  const shareUrl = window.location.href;
+  const shareUrl = window.location.origin + window.location.pathname;
   const pageTitle = document.title.split('|')[0].trim();
   const pageDesc = "Join me for an exclusive evening of networking and refined tastes.";
   const shareText = `${pageDesc} RSVP here:`;
@@ -205,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-  }
   }
   
   // --- WEBGL SMOKE SHADER ---
